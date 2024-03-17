@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilive/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,16 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'iLive',
+      theme: ThemeData(primarySwatch: Colors.red),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            title: const Text(
-              "iLive",
-            ),
-            backgroundColor: const Color.fromARGB(255, 218, 20, 20),
-            foregroundColor: Colors.white),
-      ),
+      home: const Home(),
     );
   }
 }
