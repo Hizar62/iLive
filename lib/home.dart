@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ilive/pages/dashboard.dart';
 // import 'package:ilive/pages/live.dart';
@@ -160,8 +162,6 @@ class LivePage extends StatelessWidget {
   const LivePage({Key? key, this.isHost = false}) : super(key: key);
   final bool isHost;
 
-  get userID => null;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -169,8 +169,8 @@ class LivePage extends StatelessWidget {
         appID: 1013754140, // use your appID
         appSign:
             'daf86d70032bda557bebfb4551f8e5d5a5657325870201132921bce60a07133f', // use your appSign
-        userID: userID,
-        userName: 'user_$userID',
+        userID: 'userID' + Random().nextInt(100).toString(),
+        userName: 'username' + Random().nextInt(100).toString(),
         liveID: 'testLiveID',
         config: isHost
             ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
