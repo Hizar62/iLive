@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ilive/pages/dashboard.dart';
-import 'package:ilive/pages/live.dart';
+// import 'package:ilive/pages/live.dart';
 import 'package:ilive/pages/message.dart';
 import 'package:ilive/pages/profile.dart';
 import 'package:ilive/pages/search.dart';
+import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,7 +20,7 @@ class _HomeState extends State<Home> {
     const Search(),
     const Message(),
     const Profile(),
-    const Live()
+    // const LivePage()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -36,14 +37,17 @@ class _HomeState extends State<Home> {
       ),
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.live_tv_rounded),
+        onPressed: () {
+          jumpToLivePage(context, isHost: true);
+        },
         backgroundColor: const Color.fromARGB(255, 218, 20, 20),
         foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.live_tv_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         child: Container(
           height: 60,
@@ -72,6 +76,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 20),
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
@@ -116,6 +121,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 20),
                   MaterialButton(
                     minWidth: 40,
                     onPressed: () {
@@ -140,6 +146,35 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+void jumpToLivePage(BuildContext context, {required bool isHost}) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => LivePage(isHost: isHost)));
+}
+
+class LivePage extends StatelessWidget {
+  const LivePage({Key? key, this.isHost = false}) : super(key: key);
+  final bool isHost;
+
+  get userID => null;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ZegoUIKitPrebuiltLiveStreaming(
+        appID: 1013754140, // use your appID
+        appSign:
+            'daf86d70032bda557bebfb4551f8e5d5a5657325870201132921bce60a07133f', // use your appSign
+        userID: userID,
+        userName: 'user_$userID',
+        liveID: 'testLiveID',
+        config: isHost
+            ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
+            : ZegoUIKitPrebuiltLiveStreamingConfig.audience(),
       ),
     );
   }
