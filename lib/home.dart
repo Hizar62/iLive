@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ilive/pages/dashboard.dart';
-// import 'package:ilive/pages/live.dart';
 import 'package:ilive/pages/message.dart';
 import 'package:ilive/pages/profile.dart';
 import 'package:ilive/pages/search.dart';
@@ -17,6 +16,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentTab = 0;
+  final liveIdController = TextEditingController();
+
   final List<Widget> screens = [
     const Dashboard(),
     const Search(),
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          jumpToLivePage(context, isHost: true);
+          _showDialogButton();
         },
         backgroundColor: const Color.fromARGB(255, 218, 20, 20),
         foregroundColor: Colors.white,
@@ -151,16 +152,64 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  Future<void> _showDialogButton() async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Enter LiveStream Id'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: liveIdController,
+                decoration: const InputDecoration(
+                  hintText: 'LiveStream Id',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                jumpToLivePage(context, liveIdController, isHost: true);
+                Navigator.pop(context);
+              },
+              child: const Text('Start'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
-void jumpToLivePage(BuildContext context, {required bool isHost}) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => LivePage(isHost: isHost)));
+void jumpToLivePage(
+    BuildContext context, TextEditingController liveIdController,
+    {required bool isHost}) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LivePage(
+                isHost: isHost,
+                LiveId: liveIdController.toString(),
+              )));
 }
 
 class LivePage extends StatelessWidget {
-  const LivePage({Key? key, this.isHost = false}) : super(key: key);
   final bool isHost;
+  final String LiveId;
+  const LivePage({Key? key, this.isHost = false, required this.LiveId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +220,7 @@ class LivePage extends StatelessWidget {
             'daf86d70032bda557bebfb4551f8e5d5a5657325870201132921bce60a07133f', // use your appSign
         userID: 'userID' + Random().nextInt(100).toString(),
         userName: 'username' + Random().nextInt(100).toString(),
-        liveID: 'testLiveID',
+        liveID: LiveId,
         config: isHost
             ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
             : ZegoUIKitPrebuiltLiveStreamingConfig.audience(),
