@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilive/login.dart';
-import 'package:ilive/widgets/round_button..dart';
+import 'package:ilive/widgets/round_button.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
