@@ -20,7 +20,7 @@ class _RegisterState extends State<Register> {
               gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black12, Colors.black87])),
+                  colors: [Colors.white70, Colors.black87])),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
