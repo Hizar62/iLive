@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 218, 20, 20),
         foregroundColor: Colors.white,
+        automaticallyImplyLeading: false,
       ),
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilive/home.dart';
 import 'package:ilive/widgets/round_button.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +20,7 @@ class _LoginState extends State<Login> {
               gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.white70, Colors.black87])),
+                  colors: [Colors.white54, Colors.black87])),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -99,15 +100,28 @@ class _LoginState extends State<Login> {
                   RoundButton(
                       title: "Login",
                       // loading: loading,
+
                       onTap: () {
                         // if (_formKey.currentState!.validate()) {
                         //   signIn();
                         // }
-                        ;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Home()));
                       }),
                   const SizedBox(
                     height: 30,
                   ),
+                  const InkWell(
+                    child: Text(
+                      "Forget Password?",
+                      style: TextStyle(
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

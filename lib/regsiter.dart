@@ -10,6 +10,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  String? _selectedGender;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) => Container(
       decoration: const BoxDecoration(
@@ -20,7 +24,7 @@ class _RegisterState extends State<Register> {
               gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.white70, Colors.black87])),
+                  colors: [Colors.white60, Colors.black87])),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -42,7 +46,7 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         TextFormField(
-                          // controller: _emailController,
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -67,10 +71,8 @@ class _RegisterState extends State<Register> {
                           height: 10,
                         ),
                         TextFormField(
-                          // controller: _passwordController,
-
+                          controller: _passwordController,
                           keyboardType: TextInputType.text,
-
                           obscureText: true,
                           decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -92,6 +94,33 @@ class _RegisterState extends State<Register> {
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    width: 500, // Set the desired width here
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.red, width: 1),
+                    ),
+                    child: DropdownButton<String>(
+                      value: _selectedGender,
+                      isExpanded: true,
+                      hint: const Text('Select Gender'),
+                      items: <String>['Male', 'Female'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedGender = newValue;
+                        });
+                      },
                     ),
                   ),
                   const SizedBox(
