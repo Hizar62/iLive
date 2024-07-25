@@ -10,12 +10,14 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Center(
-          child: Text(
-        'Dashboard Screen',
-        style: TextStyle(fontSize: 40),
-      )),
+    return const PopScope(
+      child: Scaffold(
+        body: Center(
+            child: Text(
+          'Dashboard Screen',
+          style: TextStyle(fontSize: 40),
+        )),
+      ),
     );
   }
 }

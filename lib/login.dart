@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilive/home.dart';
+import 'package:ilive/regsiter.dart'; // Corrected the import path
 import 'package:ilive/widgets/round_button.dart';
 
 class Login extends StatefulWidget {
@@ -118,6 +119,25 @@ class _LoginState extends State<Login> {
                       "Forget Password?",
                       style: TextStyle(
                         color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Register())); // Removed 'const' keyword
+                    },
+                    child: const Text(
+                      "New User? Create Account",
+                      style: TextStyle(
+                        color: Colors.white70,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
