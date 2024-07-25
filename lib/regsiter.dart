@@ -13,6 +13,7 @@ class _RegisterState extends State<Register> {
   String? _selectedGender;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Container(
@@ -45,6 +46,30 @@ class _RegisterState extends State<Register> {
                     // key: _formKey,
                     child: Column(
                       children: [
+                        TextFormField(
+                          controller: _userNameController,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 255, 2, 2)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 255, 5, 5)),
+                              ),
+                              hintText: 'UserName',
+                              suffix: Icon(Icons.person)),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter UserName';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,

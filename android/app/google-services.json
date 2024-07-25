@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "130706389946",
-    "project_id": "livestreaming-729d6",
-    "storage_bucket": "livestreaming-729d6.appspot.com"
+    "project_number": "907195909683",
+    "project_id": "livestreaming-91895",
+    "storage_bucket": "livestreaming-91895.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:130706389946:android:7046a9f7581c04610efb83",
+        "mobilesdk_app_id": "1:907195909683:android:bd6b934252fa6231704546",
         "android_client_info": {
           "package_name": "com.example.ilive"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAPnH6814usNXknS4-5A6VWNIkD9RdY0rY"
+          "current_key": "AIzaSyA6Pcoj9cYaoE1Fj9kHVFgxe_elMHUXC3s"
         }
       ],
       "services": {
