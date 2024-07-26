@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilive/login.dart';
+import 'package:ilive/services/auth_service.dart';
 import 'package:ilive/widgets/round_button.dart';
 
 class Register extends StatefulWidget {
@@ -10,7 +11,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String? _selectedGender;
+  // late bool loading;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _userNameController = TextEditingController();
@@ -124,41 +125,14 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    width: 500, // Set the desired width here
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.red, width: 1),
-                    ),
-                    child: DropdownButton<String>(
-                      value: _selectedGender,
-                      isExpanded: true,
-                      hint: const Text('Select Gender'),
-                      items: <String>['Male', 'Female'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedGender = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
                   RoundButton(
                       title: "Sign Up",
                       // loading: loading,
-                      onTap: () {
-                        // if (_formKey.currentState!.validate()) {
-                        //   signIn();
-                        // }
-                        ;
+                      onTap: () async {
+                        await AuthService().signup(
+                            // username: _userNameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text);
                       }),
                   const SizedBox(
                     height: 30,

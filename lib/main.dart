@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:ilive/home.dart';hhh
-import 'package:ilive/regsiter.dart';
+import 'package:ilive/login.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
-  Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'iLive',
       theme: ThemeData(primarySwatch: Colors.red),
       debugShowCheckedModeBanner: false,
-      home: const Register(),
+      home: const Login(),
     );
   }
 }
