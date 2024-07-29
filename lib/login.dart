@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ilive/home.dart';
+// import 'package:ilive/home.dart';
 import 'package:ilive/regsiter.dart'; // Corrected the import path
+import 'package:ilive/services/auth_service.dart';
 import 'package:ilive/widgets/round_button.dart';
 
 class Login extends StatefulWidget {
@@ -11,6 +12,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) => Container(
       decoration: const BoxDecoration(
@@ -43,7 +47,7 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: [
                         TextFormField(
-                          // controller: _emailController,
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -68,10 +72,8 @@ class _LoginState extends State<Login> {
                           height: 10,
                         ),
                         TextFormField(
-                          // controller: _passwordController,
-
+                          controller: _passwordController,
                           keyboardType: TextInputType.text,
-
                           obscureText: true,
                           decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -102,14 +104,11 @@ class _LoginState extends State<Login> {
                       title: "Login",
                       // loading: loading,
 
-                      onTap: () {
-                        // if (_formKey.currentState!.validate()) {
-                        //   signIn();
-                        // }
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Home()));
+                      onTap: () async {
+                        await AuthService().signin(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            context: context);
                       }),
                   const SizedBox(
                     height: 30,
