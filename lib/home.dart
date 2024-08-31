@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:ilive/pages/dashboard.dart';
-import 'package:ilive/pages/message.dart';
-import 'package:ilive/pages/profile.dart';
-import 'package:ilive/pages/search.dart';
-import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+import 'package:live/pages/dashboard.dart';
+import 'package:live/pages/message.dart';
+import 'package:live/pages/profile.dart';
+import 'package:live/pages/search.dart';
+// import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,7 +25,7 @@ class _HomeState extends State<Home> {
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Dashboard();
+  Widget currentScreen = const Dashboard();
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +180,7 @@ class _HomeState extends State<Home> {
             ),
             TextButton(
               onPressed: () {
-                jumpToLivePage(context, liveIdController, isHost: true);
+                // jumpToLivePage(context, liveIdController, isHost: true);
                 Navigator.pop(context);
               },
               child: const Text('Start'),
@@ -190,42 +188,6 @@ class _HomeState extends State<Home> {
           ],
         );
       },
-    );
-  }
-}
-
-void jumpToLivePage(
-    BuildContext context, TextEditingController liveIdController,
-    {required bool isHost}) {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => LivePage(
-                isHost: isHost,
-                LiveId: liveIdController.toString(),
-              )));
-}
-
-class LivePage extends StatelessWidget {
-  final bool isHost;
-  final String LiveId;
-  const LivePage({Key? key, this.isHost = false, required this.LiveId})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: ZegoUIKitPrebuiltLiveStreaming(
-        appID: 1013754140, // use your appID
-        appSign:
-            'daf86d70032bda557bebfb4551f8e5d5a5657325870201132921bce60a07133f', // use your appSign
-        userID: 'userID' + Random().nextInt(100).toString(),
-        userName: 'username' + Random().nextInt(100).toString(),
-        liveID: LiveId,
-        config: isHost
-            ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
-            : ZegoUIKitPrebuiltLiveStreamingConfig.audience(),
-      ),
     );
   }
 }

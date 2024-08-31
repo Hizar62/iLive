@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ilive/home.dart';
-import 'package:ilive/login.dart';
+import 'package:live/home.dart';
+import 'package:live/login.dart';
 
 class AuthService {
   Future<void> signup({

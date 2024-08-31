@@ -41,47 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBLHSdufs_GNuzfwwDEn6Of08mzhPNfMAM',
-    appId: '1:907195909683:web:75a591aaddda676a704546',
-    messagingSenderId: '907195909683',
-    projectId: 'livestreaming-91895',
-    authDomain: 'livestreaming-91895.firebaseapp.com',
-    storageBucket: 'livestreaming-91895.appspot.com',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAjiV_qY2kGm6voqYUEhw5rOPnt5M69Fv4',
-    appId: '1:907195909683:ios:f30c352dbac62a7e704546',
-    messagingSenderId: '907195909683',
-    projectId: 'livestreaming-91895',
-    storageBucket: 'livestreaming-91895.appspot.com',
-    iosBundleId: 'com.example.ilive',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBLHSdufs_GNuzfwwDEn6Of08mzhPNfMAM',
-    appId: '1:907195909683:web:802e4d6201c63ecc704546',
-    messagingSenderId: '907195909683',
-    projectId: 'livestreaming-91895',
-    authDomain: 'livestreaming-91895.firebaseapp.com',
-    storageBucket: 'livestreaming-91895.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAjiV_qY2kGm6voqYUEhw5rOPnt5M69Fv4',
-    appId: '1:907195909683:ios:f30c352dbac62a7e704546',
-    messagingSenderId: '907195909683',
-    projectId: 'livestreaming-91895',
-    storageBucket: 'livestreaming-91895.appspot.com',
-    iosBundleId: 'com.example.ilive',
+    apiKey: 'AIzaSyBGMGpzU7dcipkXaSEukVApxEADMAwmI3k',
+    appId: '1:896121137653:web:8e8fcfa77c1b0a58d258bc',
+    messagingSenderId: '896121137653',
+    projectId: 'live-c9d1f',
+    authDomain: 'live-c9d1f.firebaseapp.com',
+    storageBucket: 'live-c9d1f.appspot.com',
+    measurementId: 'G-RDJX1L9XV1',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA6Pcoj9cYaoE1Fj9kHVFgxe_elMHUXC3s',
-    appId: '1:907195909683:android:bd6b934252fa6231704546',
-    messagingSenderId: '907195909683',
-    projectId: 'livestreaming-91895',
-    storageBucket: 'livestreaming-91895.appspot.com',
+    apiKey: 'AIzaSyCr7UuqBsUFAmLRxcqpDRolwLeYZ9svq6w',
+    appId: '1:896121137653:android:3481f14dd457bd57d258bc',
+    messagingSenderId: '896121137653',
+    projectId: 'live-c9d1f',
+    storageBucket: 'live-c9d1f.appspot.com',
   );
 
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyA2AbPg1b3jz2yauxX2R7XwfSRoYKzxSmc',
+    appId: '1:896121137653:ios:c009bdae34900e03d258bc',
+    messagingSenderId: '896121137653',
+    projectId: 'live-c9d1f',
+    storageBucket: 'live-c9d1f.appspot.com',
+    iosBundleId: 'com.example.live',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyA2AbPg1b3jz2yauxX2R7XwfSRoYKzxSmc',
+    appId: '1:896121137653:ios:c009bdae34900e03d258bc',
+    messagingSenderId: '896121137653',
+    projectId: 'live-c9d1f',
+    storageBucket: 'live-c9d1f.appspot.com',
+    iosBundleId: 'com.example.live',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBGMGpzU7dcipkXaSEukVApxEADMAwmI3k',
+    appId: '1:896121137653:web:9f1f5b25681372c2d258bc',
+    messagingSenderId: '896121137653',
+    projectId: 'live-c9d1f',
+    authDomain: 'live-c9d1f.firebaseapp.com',
+    storageBucket: 'live-c9d1f.appspot.com',
+    measurementId: 'G-BTLYL6J4JK',
+  );
 }

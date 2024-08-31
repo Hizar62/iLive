@@ -1,6 +1,6 @@
 {
-    "name": "ilive",
-    "short_name": "ilive",
+    "name": "live",
+    "short_name": "live",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

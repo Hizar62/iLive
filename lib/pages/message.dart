@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Message extends StatefulWidget {
+class Message extends StatelessWidget {
   const Message({super.key});
 
   @override
-  State<Message> createState() => _MessageState();
-}
-
-class _MessageState extends State<Message> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Center(
-          child: Text(
-        'Message Screen',
-        style: TextStyle(fontSize: 40),
-      )),
+    return const Scaffold(
+      body: Center(
+        child: Text('This is the Message page'),
+      ),
     );
   }
 }
