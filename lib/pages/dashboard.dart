@@ -25,7 +25,8 @@ class _DashboardState extends State<Dashboard> {
       currentPage++;
     }
     try {
-      final response = await http.get(Uri.parse()); // Fetch 20 memes at a time
+      final response = await http.get(Uri.parse(
+          'https://meme-api.com/gimme/30')); // Fetch 20 memes at a time
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
