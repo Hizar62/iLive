@@ -51,59 +51,51 @@ class _LoginState extends State<Login> {
                     key: _formKey, // Added key to the form
                     child: Column(
                       children: [
-                        TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 255, 2, 2),
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 255, 5, 5),
-                              ),
-                            ),
-                            hintText: 'Email',
-                            helperText: 'info@gmail.com',
-                            suffix: Icon(Icons.alternate_email),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2.0, horizontal: 30.0),
+                          decoration: BoxDecoration(
+                              color: const Color(0xFFedf0f8),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter E-mail';
+                              }
+                              return null;
+                            },
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Email",
+                                hintStyle: TextStyle(
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontSize: 18.0)),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Email';
-                            }
-                            // Add email validation logic here if needed
-                            return null;
-                          },
                         ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _passwordController,
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 255, 2, 2),
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 255, 5, 5),
-                              ),
-                            ),
-                            hintText: 'Password',
-                            helperText: '[a-z][0-9]',
-                            suffix: Icon(Icons.lock),
+                        const SizedBox(height: 30),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2.0, horizontal: 30.0),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFedf0f8),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: TextFormField(
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Password';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Password",
+                                hintStyle: TextStyle(
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontSize: 18.0)),
+                            obscureText: true,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter password';
-                            }
-                            // Add password validation logic here if needed
-                            return null;
-                          },
                         ),
                       ],
                     ),

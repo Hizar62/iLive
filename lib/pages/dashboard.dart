@@ -50,6 +50,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    const CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.red));
+
     return Scaffold(
       body: isLoading
           ? Center(child: CircularProgressIndicator())

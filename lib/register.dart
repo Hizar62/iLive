@@ -52,82 +52,74 @@ class _RegisterState extends State<Register> {
                   key: _formKey, // Associate the key with the form
                   child: Column(
                     children: [
-                      TextFormField(
-                        controller: _userNameController,
-                        keyboardType: TextInputType.name,
-                        decoration: const InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 2, 2),
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 5, 5),
-                            ),
-                          ),
-                          hintText: 'UserName',
-                          suffix: Icon(Icons.person),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2.0, horizontal: 30.0),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFedf0f8),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter username';
+                            }
+                            return null;
+                          },
+                          controller: _userNameController,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Username",
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 18.0)),
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter UserName';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: 30),
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 2, 2),
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 5, 5),
-                            ),
-                          ),
-                          hintText: 'Email',
-                          helperText: 'info@gmail.com',
-                          suffix: Icon(Icons.alternate_email),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2.0, horizontal: 30.0),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFedf0f8),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter email';
+                            }
+                            return null;
+                          },
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Name",
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 18.0)),
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter Email';
-                          }
-                          return null;
-                        },
                       ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: _passwordController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 2, 2),
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 255, 5, 5),
-                            ),
-                          ),
-                          hintText: 'Password',
-                          helperText: '[a-z][0-9]',
-                          suffix: Icon(Icons.lock),
+                      const SizedBox(height: 30),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2.0, horizontal: 30.0),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFedf0f8),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Password';
+                            }
+                            return null;
+                          },
+                          controller: _passwordController,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Password",
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 18.0)),
+                          obscureText: true,
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
-                          }
-                          return null;
-                        },
                       ),
                     ],
                   ),
