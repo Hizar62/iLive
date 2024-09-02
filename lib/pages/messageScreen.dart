@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:live/pages/chat_page.dart';
 
-class Message extends StatefulWidget {
-  const Message({super.key});
+class MessageScreen extends StatefulWidget {
+  const MessageScreen({super.key, required String});
 
   @override
-  State<Message> createState() => _MessageState();
+  State<MessageScreen> createState() => _MessageState();
 }
 
-class _MessageState extends State<Message> {
+class _MessageState extends State<MessageScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override

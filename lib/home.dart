@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live/pages/dashboard.dart';
-import 'package:live/pages/message.dart';
+// import 'package:live/pages/message.dart';
+import 'package:live/pages/messageScreen.dart';
 import 'package:live/pages/profile.dart';
 import 'package:live/pages/search.dart';
 // import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
@@ -19,7 +20,9 @@ class _HomeState extends State<Home> {
   final List<Widget> screens = [
     const Dashboard(),
     const Search(),
-    const Message(),
+    const MessageScreen(
+      String: null,
+    ),
     const Profile(),
     // const LivePage()
   ];
@@ -108,7 +111,9 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Message();
+                        currentScreen = MessageScreen(
+                          String: null,
+                        );
                         currentTab = 2;
                       });
                     },
