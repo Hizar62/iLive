@@ -135,7 +135,7 @@ class _RegisterState extends State<Register> {
                         loading = true;
                       });
                       await AuthService().signup(
-                        // username: _userNameController.text,
+                        username: _userNameController.text,
                         email: _emailController.text,
                         password: _passwordController.text,
                         context: context,

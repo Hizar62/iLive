@@ -1,37 +1,55 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:live/home.dart';
 import 'package:live/login.dart';
 
 class AuthService {
+  //
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<void> signup({
-    // required String username,
     required BuildContext context,
     required String email,
     required String password,
+    required String username,
   }) async {
     try {
-      await FirebaseAuth.instance
+      // Create user with email and password
+      UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      Future.delayed(const Duration(seconds: 1));
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => const Home()));
+      // Get the user's UID
+      String uid = userCredential.user!.uid;
+
+      // Set user data in Firestore
+      await _firestore.collection('users').doc(uid).set({
+        'uid': uid,
+        'username': username,
+      });
+
+      // Navigate to Home
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => const Home()),
+      );
     } on FirebaseAuthException catch (e) {
-      // ignore: non_constant_identifier_names
-      String Message = '';
-      if (e.code == 'weak password') {
-        Message = 'The Password is to weak';
+      String message = '';
+      if (e.code == 'weak-password') {
+        message = 'The password is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        Message = 'an account already exists with that email';
+        message = 'An account already exists with that email.';
       }
       Fluttertoast.showToast(
-          msg: Message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR,
-          backgroundColor: Colors.black54,
-          fontSize: 14.0);
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        fontSize: 14.0,
+      );
     } catch (e) {
       print(e);
     }
@@ -40,10 +58,19 @@ class AuthService {
   Future<void> signin(
       {required String email,
       required String password,
+      // required String username,
       required BuildContext context}) async {
     try {
-      await FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+
+      String uid = userCredential.user!.uid;
+
+      // Set user data in Firestore
+      await _firestore.collection('users').doc(uid).set({
+        'uid': uid,
+        'email': email,
+      }, SetOptions(merge: true));
 
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(context,
