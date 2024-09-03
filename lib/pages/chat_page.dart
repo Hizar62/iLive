@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:live/components/chat_bubble.dart';
 import 'package:live/services/chat/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
@@ -95,8 +96,9 @@ class _ChatPageState extends State<ChatPage> {
           Text(data['senderName'],
               style: TextStyle(fontWeight: FontWeight.bold)),
           SizedBox(height: 5),
-          Text(data[
-              'message']), // Corrected field name from 'messages' to 'message'
+          chatBubble(
+              message: data[
+                  'message']) // Corrected field name from 'messages' to 'message'
         ],
       ),
     );
@@ -104,18 +106,45 @@ class _ChatPageState extends State<ChatPage> {
 
   // build message input
   Widget _buildMessageInput() {
-    return Row(
-      children: [
-        Expanded(
-            child: TextFormField(
-          controller: _messageController,
-          obscureText: false,
-          decoration: const InputDecoration(hintText: 'Enter a Message'),
-        )),
-        IconButton(
-            onPressed: sendMessage,
-            icon: const Icon(Icons.arrow_upward_outlined))
-      ],
+    return Padding(
+      padding:
+          const EdgeInsets.all(8.0), // Outer padding for the whole input row
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for the input field
+          borderRadius: BorderRadius.circular(30.0), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // Shadow position
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextFormField(
+                  controller: _messageController,
+                  obscureText: false,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter a Message',
+                    border: InputBorder.none, // Removes the default underline
+                  ),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: sendMessage,
+              icon: const Icon(Icons.arrow_upward_outlined),
+              color: Colors.redAccent, // Icon color
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
