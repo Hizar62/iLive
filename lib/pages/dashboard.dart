@@ -99,8 +99,7 @@ class _DashboardState extends State<Dashboard> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.download),
-                                              TextButton(
+                                              TextButton.icon(
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.red,
                                                   foregroundColor: Colors.white,
@@ -112,12 +111,12 @@ class _DashboardState extends State<Dashboard> {
                                                 onPressed: () {
                                                   // Add your Save functionality here
                                                 },
-                                                child: const Text('Save'),
+                                                icon: const Icon(Icons
+                                                    .download), // Save icon
+                                                label: const Text('Save'),
                                               ),
                                               const SizedBox(width: 70),
-                                              Icon(Icons
-                                                  .switch_access_shortcut_add_outlined),
-                                              TextButton(
+                                              TextButton.icon(
                                                 style: TextButton.styleFrom(
                                                   backgroundColor: Colors.red,
                                                   foregroundColor: Colors.white,
@@ -129,7 +128,9 @@ class _DashboardState extends State<Dashboard> {
                                                 onPressed: () {
                                                   // Add your Share functionality here
                                                 },
-                                                child: const Text('Share'),
+                                                icon: const Icon(Icons
+                                                    .switch_access_shortcut_add_outlined), // Share icon
+                                                label: const Text('Share'),
                                               ),
                                             ],
                                           )

@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:live/pages/dashboard.dart';
 // import 'package:live/pages/message.dart';
 import 'package:live/pages/messageScreen.dart';
 import 'package:live/pages/profile.dart';
 import 'package:live/pages/search.dart';
+import 'package:live/pages/live.dart';
+import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+
 // import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 class Home extends StatefulWidget {
@@ -15,7 +20,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentTab = 0;
-  final liveIdController = TextEditingController();
+  // final liveIdController = TextEditingController();
+  bool isHostButton = false;
+  final TextEditingController liveIdController = TextEditingController();
 
   final List<Widget> screens = [
     const Dashboard(),
@@ -24,8 +31,20 @@ class _HomeState extends State<Home> {
       String: null,
     ),
     const Profile(),
-    // const LivePage()
+    // const Live()
   ];
+  void _navigateToLivePage() {
+    final String liveID = liveIdController.text.trim();
+    if (liveID.isNotEmpty) {
+      // Navigate to the LivePage with the liveID and host status
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => LivePage(
+          liveID: liveID,
+          isHost: isHostButton,
+        ),
+      ));
+    }
+  }
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const Dashboard();
@@ -43,6 +62,8 @@ class _HomeState extends State<Home> {
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => Live()));
           _showDialogButton();
         },
         backgroundColor: const Color.fromARGB(255, 218, 20, 20),
@@ -163,30 +184,50 @@ class _HomeState extends State<Home> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Enter LiveStream Id'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: liveIdController,
-                decoration: const InputDecoration(
-                  hintText: 'LiveStream Id',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
+          content: StatefulBuilder(
+            builder: (context, setDialogState) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: liveIdController,
+                    decoration: const InputDecoration(
+                      hintText: 'LiveStream Id',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Text('Host Button: '),
+                      Switch(
+                        value: isHostButton,
+                        onChanged: (val) {
+                          // Update the switch state in the dialog
+                          setDialogState(() {
+                            isHostButton = val;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the dialog
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                // jumpToLivePage(context, liveIdController, isHost: true);
-                Navigator.pop(context);
+                // Close the dialog and navigate to LivePage
+                Navigator.pop(context); // Close the dialog
+                _navigateToLivePage(); // Go to the live stream page
               },
               child: const Text('Start'),
             ),
@@ -195,4 +236,6 @@ class _HomeState extends State<Home> {
       },
     );
   }
+
+  // Function to navigate to the live streaming page
 }
