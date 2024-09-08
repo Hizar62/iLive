@@ -87,7 +87,7 @@ class _SearchState extends State<Search> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _searchController.text.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                     'Enter a search term to find users',
                     style: TextStyle(fontSize: 16, color: Colors.grey),

@@ -41,6 +41,7 @@ dependencies:
   firebase_analytics: ^11.3.0
   http: ^1.2.2
   cloud_firestore: ^5.3.0
+  zego_uikit_prebuilt_live_streaming: ^3.12.4
 
 dev_dependencies:
   flutter_test:
