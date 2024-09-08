@@ -16,7 +16,27 @@ class _MessageState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildUserList(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Adding the Recent Chats heading
+          const Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+            child: Text(
+              'Recent Chats',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          // Expanded widget to allow the user list to take up remaining space
+          Expanded(
+            child: _buildUserList(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -25,10 +45,10 @@ class _MessageState extends State<MessageScreen> {
       stream: FirebaseFirestore.instance.collection('users').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('error');
+          return const Text('Error');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('Loading...');
+          return const Center(child: CircularProgressIndicator());
         }
         return ListView(
           children: snapshot.data!.docs
@@ -43,19 +63,38 @@ class _MessageState extends State<MessageScreen> {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
     if (_auth.currentUser!.email != data['email']) {
-      return ListTile(
-        title: Text(data['username']),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                receiverUsername: data['username'],
-                receiverUserId: data['uid'],
+      return Column(
+        children: [
+          ListTile(
+            title: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Text(
+                data['username'],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold, // Custom text style
+                  color: Colors.black87,
+                ),
               ),
             ),
-          );
-        },
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    receiverUsername: data['username'],
+                    receiverUserId: data['uid'],
+                  ),
+                ),
+              );
+            },
+          ),
+          const Divider(
+            color: Colors.grey, // Customize the color
+            thickness: 2, // Customize the thickness
+            indent: 20, // Optional: Indent the divider from the left
+            endIndent: 20, // Optional: Indent the divider from the right
+          ),
+        ],
       );
     } else {
       return Container();
