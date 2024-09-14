@@ -85,7 +85,7 @@ class _SearchState extends State<Search> {
         ),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _searchController.text.isEmpty
               ? const Center(
                   child: Text(
@@ -127,7 +127,7 @@ class _SearchState extends State<Search> {
                         );
                       },
                     )
-                  : Center(
+                  : const Center(
                       child: Text(
                         'No users found matching your search',
                         style: TextStyle(fontSize: 16, color: Colors.grey),

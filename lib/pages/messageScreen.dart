@@ -22,7 +22,7 @@ class _MessageState extends State<MessageScreen> {
           // Adding the Recent Chats heading
           const Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
             child: Text(
               'Recent Chats',
               style: TextStyle(

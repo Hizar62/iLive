@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 2.0, horizontal: 30.0),
                           decoration: BoxDecoration(
-                              color: Color(0xFFedf0f8),
+                              color: const Color(0xFFedf0f8),
                               borderRadius: BorderRadius.circular(30)),
                           child: TextFormField(
                             controller: _passwordController,

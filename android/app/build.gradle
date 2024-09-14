@@ -19,10 +19,11 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+
     defaultConfig {
         applicationId = "com.example.live"
         minSdkVersion = 23
-        targetSdk = flutter.targetSdkVersion
+        targetSdkVersion = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -40,9 +41,6 @@ flutter {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation platform("com.google.firebase:firebase-bom:33.2.0")
+    implementation "com.google.firebase:firebase-analytics"
 }
-
-apply plugin: 'com.google.gms.google-services' // Add this line at the bottom
-

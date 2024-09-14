@@ -87,15 +87,15 @@ class _ChatPageState extends State<ChatPage> {
 
     return Container(
       alignment: alignment,
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Column(
         crossAxisAlignment: alignment == Alignment.centerRight
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
           Text(data['senderName'],
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 5),
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 5),
           chatBubble(
               message: data[
                   'message']) // Corrected field name from 'messages' to 'message'
@@ -118,7 +118,7 @@ class _ChatPageState extends State<ChatPage> {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // Shadow position
+              offset: const Offset(0, 3), // Shadow position
             ),
           ],
         ),

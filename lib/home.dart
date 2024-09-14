@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:live/pages/dashboard.dart';
@@ -7,7 +6,6 @@ import 'package:live/pages/messageScreen.dart';
 import 'package:live/pages/profile.dart';
 import 'package:live/pages/search.dart';
 import 'package:live/pages/live.dart';
-import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 // import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
@@ -75,7 +73,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +85,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Dashboard();
+                        currentScreen = const Dashboard();
                         currentTab = 0;
                       });
                     },
@@ -107,7 +105,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Search();
+                        currentScreen = const Search();
                         currentTab = 1;
                       });
                     },
@@ -132,7 +130,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = MessageScreen(
+                        currentScreen = const MessageScreen(
                           String: null,
                         );
                         currentTab = 2;
@@ -154,7 +152,7 @@ class _HomeState extends State<Home> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Profile();
+                        currentScreen = const Profile();
                         currentTab = 3;
                       });
                     },

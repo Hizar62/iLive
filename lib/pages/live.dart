@@ -7,8 +7,7 @@ class LivePage extends StatelessWidget {
   final String liveID; // The Live Stream ID entered by the user
   final bool isHost; // Whether the user is the host or not
 
-  const LivePage({Key? key, required this.liveID, this.isHost = false})
-      : super(key: key);
+  const LivePage({super.key, required this.liveID, this.isHost = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,8 @@ class LivePage extends StatelessWidget {
               7826576485, // Replace with your actual appID from ZEGOCLOUD Admin Console
           appSign:
               'kjdfjdfkn', // Replace with your actual appSign from ZEGOCLOUD Admin Console
-          userID: 'user_id_' + Random().nextInt(100).toString(),
-          userName: 'user_name_' + Random().nextInt(100).toString(),
+          userID: 'user_id_${Random().nextInt(100)}',
+          userName: 'user_name_${Random().nextInt(100)}',
           liveID: liveID, // Pass the Live Stream ID entered in the dialog
           config: isHost
               ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
