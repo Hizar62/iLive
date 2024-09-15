@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -12,8 +16,9 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<String> memeUrls = [];
   bool isLoading = true;
+  bool _isDownloading = false; // To track the download state
   int currentPage = 1;
-  String? errorMessage; // To hold error messages
+  String? errorMessage;
 
   @override
   void initState() {
@@ -27,13 +32,12 @@ class _DashboardState extends State<Dashboard> {
     }
 
     try {
-      final response = await http.get(Uri.parse(
-          'https://meme-api.com/gimme/10')); // Ensure this API endpoint is correct
+      final response =
+          await http.get(Uri.parse('https://meme-api.com/gimme/20'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // Check if 'memes' key exists and is a list
         if (data != null &&
             data.containsKey('memes') &&
             data['memes'] is List) {
@@ -41,7 +45,7 @@ class _DashboardState extends State<Dashboard> {
             memeUrls.addAll(
                 List<String>.from(data['memes'].map((meme) => meme['url'])));
             isLoading = false;
-            errorMessage = null; // Clear any previous errors
+            errorMessage = null;
           });
         } else {
           throw Exception('Invalid response format: ${response.body}');
@@ -53,7 +57,61 @@ class _DashboardState extends State<Dashboard> {
     } catch (e) {
       setState(() {
         isLoading = false;
-        errorMessage = 'Failed to load memes: $e'; // Set error message
+        errorMessage = 'Failed to load memes: $e';
+      });
+    }
+  }
+
+  Future<void> _downloadAndSaveImageToGallery(String imageUrl) async {
+    setState(() {
+      _isDownloading = true; // Disable buttons while downloading
+    });
+
+    try {
+      var status = await Permission.storage.request();
+      if (!status.isGranted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Storage permission not granted.'),
+        ));
+        return;
+      }
+
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        // ignore: unused_local_variable
+        Directory? externalDir = await getExternalStorageDirectory();
+        String dirPath = '/storage/emulated/0/Pictures';
+
+        final fileName = p.basename(imageUrl);
+        final filePath = p.join(dirPath, fileName);
+
+        final File file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Image saved to gallery: $filePath'),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          duration: Duration(seconds: 2),
+        ));
+
+        print('Image saved to gallery: $filePath');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          content: Text('Failed to download image.'),
+        ));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        content: Text('Error saving image: $e'),
+      ));
+    } finally {
+      setState(() {
+        _isDownloading = false; // Re-enable buttons after download
       });
     }
   }
@@ -63,7 +121,6 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       body: Stack(
         children: [
-          // Main content
           isLoading
               ? const Center(child: CircularProgressIndicator())
               : NotificationListener<ScrollNotification>(
@@ -108,11 +165,14 @@ class _DashboardState extends State<Dashboard> {
                                                       horizontal: 16.0,
                                                       vertical: 8.0),
                                                 ),
-                                                onPressed: () {
-                                                  // Add your Save functionality here
-                                                },
-                                                icon: const Icon(Icons
-                                                    .download), // Save icon
+                                                onPressed: _isDownloading
+                                                    ? null
+                                                    : () {
+                                                        _downloadAndSaveImageToGallery(
+                                                            memeUrls[index]);
+                                                      },
+                                                icon:
+                                                    const Icon(Icons.download),
                                                 label: const Text('Save'),
                                               ),
                                               const SizedBox(width: 70),
@@ -125,15 +185,14 @@ class _DashboardState extends State<Dashboard> {
                                                       horizontal: 16.0,
                                                       vertical: 8.0),
                                                 ),
-                                                onPressed: () {
-                                                  // Add your Share functionality here
-                                                },
-                                                icon: const Icon(Icons
-                                                    .switch_access_shortcut_add_outlined), // Share icon
+                                                onPressed: _isDownloading
+                                                    ? null
+                                                    : () {},
+                                                icon: const Icon(Icons.share),
                                                 label: const Text('Share'),
                                               ),
                                             ],
-                                          )
+                                          ),
                                         ],
                                       );
                                     } else {
@@ -174,7 +233,6 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 ),
-          // Error message banner
           if (errorMessage != null)
             Positioned(
               top: 0,
@@ -197,7 +255,7 @@ class _DashboardState extends State<Dashboard> {
                       icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () {
                         setState(() {
-                          errorMessage = null; // Dismiss the error message
+                          errorMessage = null;
                         });
                       },
                     ),
