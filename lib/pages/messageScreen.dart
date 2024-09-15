@@ -19,10 +19,9 @@ class _MessageState extends State<MessageScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Adding the Recent Chats heading
+          
           const Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
             child: Text(
               'Recent Chats',
               style: TextStyle(
@@ -31,7 +30,6 @@ class _MessageState extends State<MessageScreen> {
               ),
             ),
           ),
-          // Expanded widget to allow the user list to take up remaining space
           Expanded(
             child: _buildUserList(),
           ),
@@ -63,38 +61,64 @@ class _MessageState extends State<MessageScreen> {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
     if (_auth.currentUser!.email != data['email']) {
-      return Column(
-        children: [
-          ListTile(
-            title: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Text(
-                data['username'],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold, // Custom text style
-                  color: Colors.black87,
+      return FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('userProfile')
+            .doc(data['uid'])
+            .get(),
+        builder: (context, profileSnapshot) {
+          if (profileSnapshot.hasError) {
+            return const ListTile(
+              title: Text('Error loading profile'),
+            );
+          }
+          if (profileSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          var profileData =
+              profileSnapshot.data!.data() as Map<String, dynamic>?;
+          String profileImageUrl = profileData?['imageLink'] ??
+              'https://img.freepik.com/premium-vector/blue-silhouette-person-s-face-against-white-background_754208-70.jpg'; // Placeholder if no image
+
+          return Column(
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage(
+                      profileImageUrl), 
                 ),
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    receiverUsername: data['username'],
-                    receiverUserId: data['uid'],
+                title: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Text(
+                    data['username'],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, // Custom text style
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
-              );
-            },
-          ),
-          const Divider(
-            color: Colors.grey, // Customize the color
-            thickness: 2, // Customize the thickness
-            indent: 20, // Optional: Indent the divider from the left
-            endIndent: 20, // Optional: Indent the divider from the right
-          ),
-        ],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatPage(
+                        receiverUsername: data['username'],
+                        receiverUserId: data['uid'],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Divider(
+                indent: 20, // Optional: Indent the divider from the left
+                endIndent: 20, // Optional: Indent the divider from the right
+              ),
+            ],
+          );
+        },
       );
     } else {
       return Container();

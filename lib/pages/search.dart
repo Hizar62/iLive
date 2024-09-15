@@ -67,12 +67,27 @@ class _SearchState extends State<Search> {
         _isLoading = false;
       });
     } catch (e) {
-      // Handle errors here
       setState(() {
         _isLoading = false;
       });
       print('Error fetching users: $e');
     }
+  }
+
+  Future<String?> _getProfileImage(String uid) async {
+    try {
+      DocumentSnapshot userProfile = await FirebaseFirestore.instance
+          .collection('userProfile')
+          .doc(uid)
+          .get();
+
+      if (userProfile.exists) {
+        return userProfile['imageLink'] as String?;
+      }
+    } catch (e) {
+      print('Error fetching profile image for user $uid: $e');
+    }
+    return null; // Return null if there's an error or no image is found
   }
 
   @override
@@ -97,31 +112,31 @@ class _SearchState extends State<Search> {
                   ? ListView.builder(
                       itemCount: _resultList.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            _resultList[index]['username'],
-                          ),
-                          subtitle: Text(
-                            _resultList[index]['email'],
-                          ),
-                          // leading: CircleAvatar(
-                          //   backgroundImage: NetworkImage(
-                          //     _resultList[index]['profilePicture'] ??
-                          //         'https://via.placeholder.com/150',
-                          //   ),
-                          // ),
-                          // Add any other UI elements you need
+                        final user = _resultList[index];
 
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(
-                                  receiverUsername: _resultList[index]
-                                      ['username'],
-                                  receiverUserId: _resultList[index]['uid'],
-                                ),
+                        return FutureBuilder<String?>(
+                          future: _getProfileImage(user['uid']),
+                          builder: (context, snapshot) {
+                            String profileImageUrl = snapshot.data ??
+                                'https://via.placeholder.com/150'; // Default image if none
+
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(profileImageUrl),
                               ),
+                              title: Text(user['username']),
+                              subtitle: Text(user['email']),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                      receiverUsername: user['username'],
+                                      receiverUserId: user['uid'],
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                         );
