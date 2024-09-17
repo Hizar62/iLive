@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// import 'package:live/pages/chat_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,6 +22,7 @@ class _DashboardState extends State<Dashboard> {
   bool _isDownloading = false; // To track the download state
   int currentPage = 1;
   String? errorMessage;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -97,9 +101,9 @@ class _DashboardState extends State<Dashboard> {
 
         print('Image saved to gallery: $filePath');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          margin: EdgeInsets.only(top: 20, left: 20, right: 20),
           content: Text('Failed to download image.'),
         ));
       }
@@ -185,9 +189,7 @@ class _DashboardState extends State<Dashboard> {
                                                       horizontal: 16.0,
                                                       vertical: 8.0),
                                                 ),
-                                                onPressed: _isDownloading
-                                                    ? null
-                                                    : () {},
+                                                onPressed: _displayBottomSheet,
                                                 icon: const Icon(Icons.share),
                                                 label: const Text('Share'),
                                               ),
@@ -266,5 +268,109 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
     );
+  }
+
+  Future _displayBottomSheet() {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        barrierColor: Colors.black87.withOpacity(0.5),
+        builder: (context) => Container(
+              padding: EdgeInsets.only(top: 20),
+              height: 400,
+              child: Center(
+                child: _buildUserList(),
+              ),
+            ));
+  }
+
+  Widget _buildUserList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Error');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return ListView(
+          children: snapshot.data!.docs
+              .map<Widget>((doc) => _buildUserListItem(doc))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildUserListItem(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+    if (_auth.currentUser!.email != data['email']) {
+      return FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('userProfile')
+            .doc(data['uid'])
+            .get(),
+        builder: (context, profileSnapshot) {
+          if (profileSnapshot.hasError) {
+            return const ListTile(
+              title: Text('Error loading profile'),
+            );
+          }
+          if (profileSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          var profileData =
+              profileSnapshot.data!.data() as Map<String, dynamic>?;
+          String profileImageUrl = profileData?['imageLink'] ??
+              'https://img.freepik.com/premium-vector/blue-silhouette-person-s-face-against-white-background_754208-70.jpg'; // Placeholder if no image
+
+          return Column(
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage(profileImageUrl),
+                ),
+                title: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Text(
+                        data['username'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold, // Custom text style
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 150,
+                    ),
+                    TextButton.icon(
+                      onPressed: () {},
+                      label: const Icon(
+                        Icons.send,
+                        color: Colors.red,
+                      ),
+                    )
+                  ],
+                ),
+                onTap: () {},
+              ),
+              const Divider(
+                indent: 20, // Optional: Indent the divider from the left
+                endIndent: 20, // Optional: Indent the divider from the right
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 }
