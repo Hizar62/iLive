@@ -7,11 +7,13 @@ import 'package:live/services/chat/chat_service.dart';
 class ChatPage extends StatefulWidget {
   final String receiverUsername;
   final String receiverUserId;
+  final String? memeUrl; // Optional meme URL
 
   const ChatPage({
     super.key,
     required this.receiverUsername,
     required this.receiverUserId,
+    this.memeUrl, // Accept the meme URL as an optional parameter
   });
 
   @override
@@ -23,10 +25,27 @@ class _ChatPageState extends State<ChatPage> {
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  void sendMessage() async {
-    if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMessage(
-          widget.receiverUserId, _messageController.text);
+  @override
+  void initState() {
+    super.initState();
+
+    // If a meme URL is provided, send it as a message automatically
+    if (widget.memeUrl != null) {
+      sendMessage(memeUrl: widget.memeUrl);
+    }
+  }
+
+  void sendMessage({String? memeUrl}) async {
+    String messageContent = memeUrl ??
+        _messageController
+            .text; // Use the meme URL if available, otherwise the text message
+
+    if (messageContent.isNotEmpty) {
+      await _chatService.sendMessage(widget.receiverUserId, messageContent,
+          messageType: memeUrl != null
+              ? 'image'
+              : 'text' // If it's a meme URL, messageType is 'image'
+          );
       _messageController.clear();
     }
   }
@@ -80,10 +99,21 @@ class _ChatPageState extends State<ChatPage> {
   // build message item
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    bool _isImageUrl(String url) {
+      // Simple check for common image extensions
+      return url.endsWith('.png') ||
+          url.endsWith('.jpg') ||
+          url.endsWith('.jpeg') ||
+          url.endsWith('.gif') ||
+          url.endsWith('.bmp');
+    }
 
     var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
+
+    // Check if the message is an image URL
+    bool isImage = _isImageUrl(data['message']);
 
     return Container(
       alignment: alignment,
@@ -96,9 +126,15 @@ class _ChatPageState extends State<ChatPage> {
           Text(data['senderName'],
               style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 5),
-          chatBubble(
-              message: data[
-                  'message']) // Corrected field name from 'messages' to 'message'
+          // If it's an image, display it as an image; otherwise, display it as text
+          isImage
+              ? Image.network(
+                  data['message'],
+                  width: 250,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.broken_image, color: Colors.red),
+                ) // Add error handling for broken images
+              : chatBubble(message: data['message']), // Otherwise, show as text
         ],
       ),
     );

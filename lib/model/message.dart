@@ -5,14 +5,17 @@ class Message {
   final String senderName;
   final String userId;
   final String message;
+  final String messageType; // New field for message type
   final Timestamp timeStamp;
 
-  Message(
-      {required this.senderId,
-      required this.senderName,
-      required this.userId,
-      required this.message,
-      required this.timeStamp});
+  Message({
+    required this.senderId,
+    required this.senderName,
+    required this.userId,
+    required this.message,
+    this.messageType = 'text', // Default to 'text'
+    required this.timeStamp,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,7 +23,19 @@ class Message {
       'senderName': senderName,
       'userId': userId,
       'message': message,
-      'timeStamp': timeStamp
+      'messageType': messageType, // Include messageType in map
+      'timeStamp': timeStamp,
     };
+  }
+
+  factory Message.fromMap(Map<String, dynamic> map) {
+    return Message(
+      senderId: map['senderId'],
+      senderName: map['senderName'],
+      userId: map['userId'],
+      message: map['message'],
+      messageType: map['messageType'] ?? 'text', // Safely handle missing field
+      timeStamp: map['timeStamp'],
+    );
   }
 }

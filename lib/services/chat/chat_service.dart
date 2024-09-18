@@ -8,17 +8,19 @@ class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Send Message
-  Future<void> sendMessage(String receiverId, String message) async {
+  Future<void> sendMessage(String receiverId, String message,
+      {String messageType = 'text'}) async {
     final String currentUserId = _firebaseAuth.currentUser!.uid;
     final String currentUserName = _firebaseAuth.currentUser!.email.toString();
     final Timestamp timestamp = Timestamp.now();
 
-    // create a new message
+    // create a new message with type
     Message newMessage = Message(
         senderId: currentUserId,
         senderName: currentUserName,
         userId: receiverId,
         message: message,
+        messageType: messageType, // Store message type (text or image)
         timeStamp: timestamp);
 
     List<String> ids = [currentUserId, receiverId];

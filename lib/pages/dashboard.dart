@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:live/pages/chat_page.dart';
+import 'package:live/services/chat/chat_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -23,6 +23,7 @@ class _DashboardState extends State<Dashboard> {
   int currentPage = 1;
   String? errorMessage;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ChatService _chatService = ChatService();
 
   @override
   void initState() {
@@ -189,7 +190,10 @@ class _DashboardState extends State<Dashboard> {
                                                       horizontal: 16.0,
                                                       vertical: 8.0),
                                                 ),
-                                                onPressed: _displayBottomSheet,
+                                                onPressed: () {
+                                                  _displayBottomSheet(memeUrls[
+                                                      index]); // Correct async call handling
+                                                },
                                                 icon: const Icon(Icons.share),
                                                 label: const Text('Share'),
                                               ),
@@ -270,7 +274,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Future _displayBottomSheet() {
+  Future _displayBottomSheet(String memeUrl) {
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -279,12 +283,12 @@ class _DashboardState extends State<Dashboard> {
               padding: EdgeInsets.only(top: 20),
               height: 400,
               child: Center(
-                child: _buildUserList(),
+                child: _buildUserList(memeUrl),
               ),
             ));
   }
 
-  Widget _buildUserList() {
+  Widget _buildUserList(String memeUrl) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('users').snapshots(),
       builder: (context, snapshot) {
@@ -296,15 +300,21 @@ class _DashboardState extends State<Dashboard> {
         }
         return ListView(
           children: snapshot.data!.docs
-              .map<Widget>((doc) => _buildUserListItem(doc))
+              .map<Widget>((doc) => _buildUserListItem(doc, memeUrl))
               .toList(),
         );
       },
     );
   }
 
-  Widget _buildUserListItem(DocumentSnapshot document) {
+  Widget _buildUserListItem(DocumentSnapshot document, String memeUrl) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    void sendMessage(String memeUrl, String userId) async {
+      await _chatService.sendMessage(userId, memeUrl);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Meme sent successfully!'),
+      ));
+    }
 
     if (_auth.currentUser!.email != data['email']) {
       return FutureBuilder<DocumentSnapshot>(
@@ -351,11 +361,11 @@ class _DashboardState extends State<Dashboard> {
                       width: 150,
                     ),
                     TextButton.icon(
-                      onPressed: () {},
-                      label: const Icon(
-                        Icons.send,
-                        color: Colors.red,
-                      ),
+                      onPressed: () {
+                        sendMessage(memeUrl, data['uid']);
+                      },
+                      // icon: const Icon(Icons.send),
+                      label: const Text('Send'),
                     )
                   ],
                 ),
