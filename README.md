@@ -41,5 +41,24 @@ A full-featured live streaming mobile application built with Flutter. This app o
 5. Run the app:
    ```bash
    flutter run
+# Screen Shots
+<div style="display: flex; flex-wrap: wrap;">
+  <img src="Live/1.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/2.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/3.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/4.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/5.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/6.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/7.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/8.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/9.jpg" alt="App Screenshot" width="300"/>
+  <img src="Live/10.png" alt="App Screenshot" width="300"/>
+  <img src="Live/11.png" alt="App Screenshot" width="300"/>
+  <img src="Live/12.png" alt="App Screenshot" width="300"/>
+  <img src="Live/13.jpg" alt="App Screenshot" width="300"/>
+</div>
+
+
+
 
 
