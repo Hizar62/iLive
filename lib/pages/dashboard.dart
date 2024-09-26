@@ -357,15 +357,15 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 150,
-                    ),
-                    TextButton.icon(
+                    SizedBox(width: 150), // Adds horizontal space
+
+                    TextButton(
                       onPressed: () {
                         sendMessage(memeUrl, data['uid']);
                       },
+                      child: const Icon(Icons.send, color: Colors.red),
+
                       // icon: const Icon(Icons.send),
-                      label: const Text('Send'),
                     )
                   ],
                 ),

@@ -97,10 +97,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   // build message item
+// build message item
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
     bool _isImageUrl(String url) {
-      // Simple check for common image extensions
       return url.endsWith('.png') ||
           url.endsWith('.jpg') ||
           url.endsWith('.jpeg') ||
@@ -112,29 +113,50 @@ class _ChatPageState extends State<ChatPage> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    // Check if the message is an image URL
     bool isImage = _isImageUrl(data['message']);
 
     return Container(
       alignment: alignment,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Column(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: alignment == Alignment.centerRight
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          Text(data['senderName'],
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 5),
-          // If it's an image, display it as an image; otherwise, display it as text
-          isImage
-              ? Image.network(
-                  data['message'],
-                  width: 250,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.broken_image, color: Colors.red),
-                ) // Add error handling for broken images
-              : chatBubble(message: data['message']), // Otherwise, show as text
+          if (alignment ==
+              Alignment.centerLeft) // Show avatar for other users' messages
+            FutureBuilder<String?>(
+              future: _getProfileImage(data['senderId']), // Fetch profile image
+              builder: (context, snapshot) {
+                String profileImageUrl = snapshot.data ??
+                    'https://via.placeholder.com/150'; // Default image
+
+                return CircleAvatar(
+                  radius: 20, // Adjust the size
+                  backgroundImage: NetworkImage(profileImageUrl),
+                );
+              },
+            ),
+          const SizedBox(
+              width: 10), // Add some space between the avatar and message
+          Column(
+            crossAxisAlignment: alignment == Alignment.centerRight
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 5),
+              isImage
+                  ? Image.network(
+                      data['message'],
+                      width: 250,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, color: Colors.red),
+                    )
+                  : chatBubble(
+                      message: data['message']), // Otherwise, show as text
+            ],
+          ),
         ],
       ),
     );
@@ -183,4 +205,20 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+}
+
+Future<String?> _getProfileImage(String uid) async {
+  try {
+    DocumentSnapshot userProfile = await FirebaseFirestore.instance
+        .collection('userProfile')
+        .doc(uid)
+        .get();
+
+    if (userProfile.exists) {
+      return userProfile['imageLink'] as String?;
+    }
+  } catch (e) {
+    print('Error fetching profile image for user $uid: $e');
+  }
+  return null; // Return null if there's an error or no image is found
 }
