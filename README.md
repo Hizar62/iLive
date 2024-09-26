@@ -1,16 +1,45 @@
-# live
+# Live Streaming App
 
-A new Flutter project.
+A full-featured live streaming mobile application built with Flutter. This app offers real-time chat, meme sharing via an API, and live streaming capabilities using ZEGOCLOUD. It also integrates Firebase for secure user authentication and real-time data management.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Live Streaming**: Users can go live with their friends seamlessly using ZEGOCLOUD.
+- **Real-time Chat**: Engage with other users through live chat during streams.
+- **Meme Timeline**: Memes are fetched via an external API and displayed on a timeline, allowing users to browse and share memes.
+- **User Authentication**: Firebase authentication ensures secure login and registration processes.
+- **Real-time Data Management**: Firebase manages data efficiently, providing real-time updates for chats and live streaming sessions.
 
-A few resources to get you started if this is your first Flutter project:
+## Tools & Technologies
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: The app's front-end was developed using Flutter for a sleek and intuitive user experience.
+- **ZEGOCLOUD**: Integrated to enable seamless live streaming features.
+- **Firebase**: Used for user authentication, real-time data management, and database storage.
+- **Meme API**: Fetched memes from an external API to display on the timeline.
+- **Dart**: Core programming language used in the development of the app.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/Hizar62/iLive.git
+   ```
+2. Navigate to the project directory:
+
+    ```bash
+    cd iLive
+3. Install dependencies:
+   ```bash
+    flutter pub get
+4. Set up Firebase:
+   
+   Create a Firebase project and add your Firebase configuration files to the project.
+   
+   Enable Firebase Authentication and Firestore for real-time data.
+
+5. Run the app:
+   ```bash
+   flutter run
+
+
